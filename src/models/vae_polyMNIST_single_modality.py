@@ -8,7 +8,7 @@ from torchvision import transforms
 from torchvision.utils import save_image, make_grid
 from utils import Constants
 from .base_vae import VAE
-from datasets_PolyMNIST import PolyMNISTDataset
+from dataset_PolyMNIST import PolyMNISTDataset
 from .encoder_decoder_blocks.resnet_polyMNIST import Enc, Dec
 
 # Constants

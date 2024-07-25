@@ -62,8 +62,6 @@ args = parser.parse_args()
 flags_clf_lr = {'latdimz': args.latent_dim_z,
                 'latdimw': args.latent_dim_w}
 # Random seed
-# https://pytorch.org/docs/stable/notes/randomness.html
-# torch.backends.cudnn.benchmark = True
 torch.manual_seed(args.seed)
 np.random.seed(args.seed)
 

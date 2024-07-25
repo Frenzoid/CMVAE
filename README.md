@@ -14,7 +14,8 @@ cd data
 curl -L -o data_PM_ICLR_2024.zip https://polybox.ethz.ch/index.php/s/DvIsHiopIoPnKXI/download
 unzip data_PM_ICLR_2024.zip 
 ```
-### CUBICC (code will be released soon) 
+
+### CUBICC
 We introduce a variation of the CUB Image-Captions dataset [1], based on the Caltech-UCSD Birds
 (CUB) dataset. 
 To do so, we group sub-species of birds in the original dataset in eight single species.
@@ -29,12 +30,22 @@ The CUBICC dataset consists of 13150 image-captions paired samples from 22 subsp
 
 <img src="figures/CUBICC_schematic.png" alt="datasets_dfigure" width="800" >
 
+To download the CUBICC dataset run
+```
+curl -L -o CUBICC.zip https://polybox.ethz.ch/index.php/s/LRkTC2oa6YHHlUj/download
+unzip CUBICC.zip
+```
+
 ## Experiments 
 Run on PolyMNIST dataset
 ```
 bash commands/run_polyMNIST_experiment.sh
 ```
 
+Run on CUBICC dataset
+```
+bash commands/run_CUBICC_experiment.sh
+```
 
 ## Citing 
 ```

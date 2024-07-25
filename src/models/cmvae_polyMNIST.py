@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torchvision.utils import save_image, make_grid
 from torchvision import transforms
-from datasets_PolyMNIST import PolyMNISTDataset
+from dataset_PolyMNIST import PolyMNISTDataset
 from utils import Constants
 from .cmvae import CMVAE
 from .vae_polyMNIST_single_modality import PolyMNIST

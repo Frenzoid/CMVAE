@@ -12,7 +12,8 @@ To download the PolyMNIST dataset run
 mkdir data 
 cd data 
 curl -L -o data_PM_ICLR_2024.zip https://polybox.ethz.ch/index.php/s/DvIsHiopIoPnKXI/download
-unzip data_PM_ICLR_2024.zip 
+unzip data_PM_ICLR_2024.zip
+mv data_PM_ICLR_2024/* ./
 ```
 
 ### CUBICC
@@ -32,10 +33,11 @@ The CUBICC dataset consists of 13150 image-captions paired samples from 22 subsp
 
 To download the CUBICC dataset run
 ```
+mkdir data 
+cd data 
 curl -L -o CUBICC.zip https://polybox.ethz.ch/index.php/s/LRkTC2oa6YHHlUj/download
 unzip CUBICC.zip
 ```
-
 ## Experiments 
 Run on PolyMNIST dataset
 ```
@@ -46,6 +48,7 @@ Run on CUBICC dataset
 ```
 bash commands/run_CUBICC_experiment.sh
 ```
+( NOTE: To run the CUBICC experiment, you will also need the polymnist dataset downlaoded )
 
 ## Citing 
 ```

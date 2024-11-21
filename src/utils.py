@@ -196,6 +196,7 @@ def plot_text_as_image_tensor(sentences_lists_of_words, pixel_width=64, pixel_he
         image_np = image_np.reshape(fig.canvas.get_width_height()[::-1] + (3,))
 
         # Convert the NumPy array to a PyTorch tensor
+        image_np = np.copy(image_np)
         image_tensor = torch.from_numpy(image_np).permute(2, 0, 1).float() / 255  # Normalize to [0, 1]
         imgs.append(image_tensor)
         # Clean up the figure
@@ -226,5 +227,3 @@ def cluster_acc(y_true, y_pred, return_index=False):
     else:
         #return sum(w[ind[0], ind[1]]) * 1.0 / y_pred.size
         return sum([w[ind[0,i], ind[1,i]] for i in range(len(ind[0]))]) * 1.0 / y_pred.size
-
-

@@ -62,7 +62,7 @@ torch.manual_seed(args.seed)
 np.random.seed(args.seed)
 
 # CUDA stuff
-args.cuda = not args.no_cuda and torch.backend.mps.is_available()
+args.cuda = not args.no_cuda and torch.backends.mps.is_available()
 device = torch.device("mps" if args.cuda else "cpu")
 print(device)
 
@@ -74,7 +74,7 @@ if not args.experiment:
     args.experiment = model.modelName
 
 # Set up run path
-runId = str(args.latent_dim_w) + '_' + str(args.latent_dim_z) + '_' + str(args.beta) + '_' + str(args.seed)
+runId = 'D' + str(args.latent_dim_w) + ':' + str(args.latent_dim_z) + ', B' + str(args.beta) + ', K' + str(args.K)
 experiment_dir = Path(os.path.join(args.outputdir, args.experiment, "checkpoints"))
 experiment_dir.mkdir(parents=True, exist_ok=True)
 runPath = os.path.join(str(experiment_dir), runId)
@@ -246,7 +246,7 @@ if __name__ == '__main__':
     with Timer('MM-VAE') as t:
         for epoch in range(1, args.epochs + 1):
             train(epoch)
-            if epoch % 25 == 0:
+            if epoch % 1 == 0:
                 test(epoch)
                 gen_samples = model.generate_unconditional(N=100, indexes_to_prune=None, indexes_to_select=None,
                                                            coherence_calculation=False, fid_calculation=False,
@@ -254,6 +254,6 @@ if __name__ == '__main__':
                 for j in range(NUM_VAES):
                     wandb.log({'Generations/m{}'.format(j): wandb.Image(gen_samples[j])}, step=epoch)
                 calculate_fid_routine(datadirCUBICC, fid_path, 10000, epoch)
-            if epoch % 25 == 0:
+            if epoch % 1 == 0:
                 save_model_light(model, runPath + '/model_'+str(epoch)+'.rar')
 

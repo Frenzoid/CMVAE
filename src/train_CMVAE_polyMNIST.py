@@ -66,8 +66,8 @@ torch.manual_seed(args.seed)
 np.random.seed(args.seed)
 
 # CUDA stuff
-args.cuda = not args.no_cuda and torch.cuda.is_available()
-device = torch.device("cuda" if args.cuda else "cpu")
+args.cuda = not args.no_cuda and torch.backends.mps.is_available()
+device = torch.device("mps" if args.cuda else "cpu")
 
 # Get model class
 modelC = getattr(models, 'CMVAE_PolyMNIST_5modalities')
@@ -78,7 +78,7 @@ if not args.experiment:
     args.experiment = model.modelName
 
 # Set up run path
-runId = str(args.latent_dim_w) + '_' + str(args.latent_dim_z) + '_' + str(args.beta) + '_' + str(args.seed)
+runId = 'D' + str(args.latent_dim_w) + ':' + str(args.latent_dim_z) + ', B' + str(args.beta) + ', K' + str(args.K)
 experiment_dir = Path(os.path.join(args.outputdir, args.experiment, "checkpoints"))
 experiment_dir.mkdir(parents=True, exist_ok=True)
 runPath = os.path.join(str(experiment_dir), runId)
@@ -125,7 +125,7 @@ validation_indices = np.load(os.path.join(args.datadir, 'valid_PMtest_indices.np
 test_indices = np.load(os.path.join(args.datadir, 'test_PMtest_indices.npy'))
 validation_dataset = Subset(test_and_validation_dataset, validation_indices)
 test_dataset = Subset(test_and_validation_dataset, test_indices)
-kwargs = {'num_workers': 2, 'pin_memory': True} if device == 'cuda' else {}
+kwargs = {'num_workers': 2, 'pin_memory': True} if device == 'mps' else {}
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, **kwargs)
 validation_loader = torch.utils.data.DataLoader(validation_dataset, batch_size=args.batch_size, shuffle=True, **kwargs)
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=args.batch_size, shuffle=True, **kwargs)
@@ -140,7 +140,7 @@ t_objective = objective # Test objective (same as training)
 
 # Loading pre-trained digit classifiers
 clfs = [ClfImg() for idx, modal in enumerate(model.vaes)]
-needs_conversion = not args.cuda
+needs_conversion = args.cuda
 conversion_kwargs = {'map_location': lambda st, loc: st} if needs_conversion else {}
 for idx, vae in enumerate(model.vaes):
     clfs[idx].load_state_dict(
@@ -148,7 +148,7 @@ for idx, vae in enumerate(model.vaes):
                    **conversion_kwargs), strict=False)
     clfs[idx].eval()
     if args.cuda:
-        clfs[idx].cuda()
+        clfs[idx].to('mps')
 
 
 def train(epoch):

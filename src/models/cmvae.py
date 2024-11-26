@@ -58,7 +58,7 @@ class CMVAE(nn.Module):
                     pw = vae.pw(*vae.pw_params_aux)
                     latents_w = pw.rsample(torch.Size([us.size()[0], us.size()[1]])).squeeze(2)
                     # Fixed for cuda (sorry)
-                    if not self.params.no_cuda and torch.backend.mps.is_available():
+                    if not self.params.no_cuda and torch.backends.mps.is_available():
                         latents_w.to('mps')
                     # Combine shared and resampled private latents
                     us_combined = torch.cat((latents_w, z_e), dim=-1)
@@ -213,7 +213,7 @@ class CMVAE(nn.Module):
                     pw = vae.pw(*vae.pw_params_std)
                     latents_w = pw.rsample(torch.Size([us.size()[0], us.size()[1]])).squeeze(2)
                     # Fixed for cuda (sorry)
-                    if not self.params.no_cuda and torch.backend.mps.is_available():
+                    if not self.params.no_cuda and torch.scatter_reduce.mps.is_available():
                         latents_w.to('mps')
                     # Combine shared and resampled private latents
                     us_combined = torch.cat((latents_w, z_e), dim=-1)

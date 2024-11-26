@@ -1,0 +1,71 @@
+{
+  "os":  "macOS-14.3.1-arm64-arm-64bit",
+  "python":  "3.11.4",
+  "startedAt":  "2024-11-26T13:28:52.340922Z",
+  "args":  [
+    "--experiment",
+    "PolyMNIST_1",
+    "--obj",
+    "iwae",
+    "--K",
+    "1",
+    "--batch-size",
+    "128",
+    "--epochs",
+    "250",
+    "--latent-dim-c",
+    "40",
+    "--latent-dim-z",
+    "32",
+    "--latent-dim-w",
+    "32",
+    "--seed",
+    "2",
+    "--beta",
+    "2.5",
+    "--datadir",
+    "../data",
+    "--outputdir",
+    "../outputs",
+    "--inception_path",
+    "../data/pt_inception-2015-12-05-6726825d.pth",
+    "--pretrained-clfs-dir-path",
+    "../data/trained_clfs_polyMNIST",
+    "--priorposterior",
+    "Laplace"
+  ],
+  "program":  "/Users/elvi/Documents/CMVAE/src/train_CMVAE_polyMNIST.py",
+  "codePath":  "src/train_CMVAE_polyMNIST.py",
+  "git":  {
+    "remote":  "https://github.com/Frenzoid/CMVAE",
+    "commit":  "2ad9c7c9973e7aa6aa61723bea0fb71879e54af0"
+  },
+  "email":  "sabaue@usi.ch",
+  "root":  "/Users/elvi/Documents/CMVAE/src",
+  "host":  "O.o",
+  "username":  "elvi",
+  "executable":  "/Users/elvi/anaconda3/bin/python",
+  "codePathLocal":  "train_CMVAE_polyMNIST.py",
+  "cpu_count":  12,
+  "cpu_count_logical":  12,
+  "disk":  {
+    "/":  {
+      "total":  "494384795648",
+      "used":  "401830604800"
+    }
+  },
+  "memory":  {
+    "total":  "17179869184"
+  },
+  "cpu":  {
+    "count":  12,
+    "countLogical":  12
+  },
+  "apple":  {
+    "name":  "Apple M2 Pro",
+    "ecpuCores":  4,
+    "pcpuCores":  8,
+    "gpuCores":  19,
+    "memoryGb":  16
+  }
+}

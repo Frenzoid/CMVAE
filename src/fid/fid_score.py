@@ -43,7 +43,7 @@ from imageio import imread
 from torch.nn.functional import adaptive_avg_pool2d
 
 
-print(torch.backend.mps.is_available())
+print(torch.backends.mps.is_available())
 
 try:
     from tqdm import tqdm
@@ -187,7 +187,7 @@ def calculate_frechet_distance(mu1, sigma1, mu2, sigma2, eps=1e-6):
             # raise ValueError('Imaginary component {}'.format(m))
         else:
             covmean = covmean.real
-            
+
     covmean = np.atleast_2d(covmean)
 
     tr_covmean = np.trace(covmean)

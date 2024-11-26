@@ -77,7 +77,7 @@ def save_model_light(model, filepath):
             # fdir, fext = os.path.splitext(filepath)
             # save_vars(vae.state_dict(), fdir + '_' + vae.modelName + fext)
 
-def unpack_data(data, device='cuda'):
+def unpack_data(data, device='mps'):
     data_nolabel = data[0]
     n_idxs = len(data_nolabel)
     return [data_nolabel[idx].to(device) for idx in range(n_idxs)], data[1].to(device)

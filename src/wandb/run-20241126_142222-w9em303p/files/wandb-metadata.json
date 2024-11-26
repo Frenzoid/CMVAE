@@ -1,0 +1,67 @@
+{
+  "os":  "macOS-14.3.1-arm64-arm-64bit",
+  "python":  "3.11.4",
+  "startedAt":  "2024-11-26T13:22:22.143432Z",
+  "args":  [
+    "--experiment",
+    "CUBICC_1",
+    "--obj",
+    "dreg",
+    "--K",
+    "10",
+    "--batch-size",
+    "32",
+    "--epochs",
+    "300",
+    "--latent-dim-c",
+    "35",
+    "--latent-dim-z",
+    "64",
+    "--latent-dim-w",
+    "32",
+    "--seed",
+    "2",
+    "--beta",
+    "1.0",
+    "--datadir",
+    "../data",
+    "--outputdir",
+    "../outputs",
+    "--priorposterior",
+    "Normal"
+  ],
+  "program":  "/Users/elvi/Documents/CMVAE/src/train_CMVAE_CUBICC.py",
+  "codePath":  "src/train_CMVAE_CUBICC.py",
+  "git":  {
+    "remote":  "https://github.com/Frenzoid/CMVAE",
+    "commit":  "2ad9c7c9973e7aa6aa61723bea0fb71879e54af0"
+  },
+  "email":  "sabaue@usi.ch",
+  "root":  "/Users/elvi/Documents/CMVAE/src",
+  "host":  "O.o",
+  "username":  "elvi",
+  "executable":  "/Users/elvi/anaconda3/bin/python",
+  "codePathLocal":  "train_CMVAE_CUBICC.py",
+  "cpu_count":  12,
+  "cpu_count_logical":  12,
+  "disk":  {
+    "/":  {
+      "total":  "494384795648",
+      "used":  "400749645824"
+    }
+  },
+  "memory":  {
+    "total":  "17179869184"
+  },
+  "cpu":  {
+    "count":  12,
+    "countLogical":  12
+  },
+  "apple":  {
+    "name":  "Apple M2 Pro",
+    "ecpuCores":  4,
+    "pcpuCores":  8,
+    "gpuCores":  19,
+    "memoryGb":  16
+  }
+}

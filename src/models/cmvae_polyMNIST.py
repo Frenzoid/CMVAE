@@ -97,14 +97,14 @@ class PolyMNIST_5modalities(CMVAE):
             return self._pw_params[0], F.softmax(self._pw_params[1], dim=-1) * self._pw_params[1].size(-1) + Constants.eta
 
 
-    def getDataSets(self, batch_size, shuffle=True, device='cuda'):
+    def getDataSets(self, batch_size, shuffle=True, device='mps'):
         """Get PolyMNIST datasets."""
         tx = transforms.ToTensor()
         unim_train_datapaths = [self.datadir+"/PolyMNIST/train/" + "m" + str(i) for i in [0, 1, 2, 3, 4]]
         unim_test_datapaths = [self.datadir+"/PolyMNIST/test/" + "m" + str(i) for i in [0, 1, 2, 3, 4]]
         dataset_PolyMNIST_train = PolyMNISTDataset(unim_train_datapaths, transform=tx)
         dataset_PolyMNIST_test = PolyMNISTDataset(unim_test_datapaths, transform=tx)
-        # kwargs = {'num_workers': 2, 'pin_memory': True} if device == 'cuda' else {}
+        # kwargs = {'num_workers': 2, 'pin_memory': True} if device == 'mps' else {}
         # train = DataLoader(dataset_PolyMNIST_train, batch_size=batch_size, shuffle=shuffle, **kwargs)
         # test = DataLoader(dataset_PolyMNIST_test, batch_size=batch_size, shuffle=shuffle, **kwargs)
         return dataset_PolyMNIST_train, dataset_PolyMNIST_test

@@ -102,12 +102,12 @@ class PolyMNIST(VAE):
                 -1) + Constants.eta
 
 
-    def getDataLoaders(self, batch_size, shuffle=True, device='cuda'):
+    def getDataLoaders(self, batch_size, shuffle=True, device='mps'):
         """Get PolyMNIST modality dataloaders."""
         unim_datapaths_train = [self.datadir+"/PolyMNIST/train/" + "m" + str(self.modal)]
         unim_datapaths_test = [self.datadir+"/PolyMNIST/test/" + "m" + str(self.modal)]
         
-        kwargs = {'num_workers': 1, 'pin_memory': True} if device == 'cuda' else {}
+        kwargs = {'num_workers': 1, 'pin_memory': True} if device == 'mps' else {}
         tx = transforms.ToTensor()
         train = DataLoader(PolyMNISTDataset(unim_datapaths_train, transform=tx),
                            batch_size=batch_size, shuffle=shuffle, **kwargs)

@@ -43,7 +43,7 @@ class VAE(nn.Module):
         return self._qu_x_params
 
     @staticmethod
-    def getDataLoaders(batch_size, shuffle=True, device="cuda"):
+    def getDataLoaders(batch_size, shuffle=True, device="mps"):
         # handle merging individual datasets appropriately in sub-class
         raise NotImplementedError
 

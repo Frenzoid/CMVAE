@@ -17,7 +17,7 @@ class CMVAE(nn.Module):
         self.params = params # Model parameters (i.e. args passed to main script)
 
     @staticmethod
-    def getDataSets(batch_size, shuffle=True, device="cuda"):
+    def getDataSets(batch_size, shuffle=True, device="mps"):
         # Handle getting individual datasets appropriately in sub-class
         raise NotImplementedError
 
@@ -58,8 +58,8 @@ class CMVAE(nn.Module):
                     pw = vae.pw(*vae.pw_params_aux)
                     latents_w = pw.rsample(torch.Size([us.size()[0], us.size()[1]])).squeeze(2)
                     # Fixed for cuda (sorry)
-                    if not self.params.no_cuda and torch.cuda.is_available():
-                        latents_w.cuda()
+                    if not self.params.no_cuda and torch.backend.mps.is_available():
+                        latents_w.to('mps')
                     # Combine shared and resampled private latents
                     us_combined = torch.cat((latents_w, z_e), dim=-1)
                     # Get cross-reconstruction likelihood
@@ -213,8 +213,8 @@ class CMVAE(nn.Module):
                     pw = vae.pw(*vae.pw_params_std)
                     latents_w = pw.rsample(torch.Size([us.size()[0], us.size()[1]])).squeeze(2)
                     # Fixed for cuda (sorry)
-                    if not self.params.no_cuda and torch.cuda.is_available():
-                        latents_w.cuda()
+                    if not self.params.no_cuda and torch.backend.mps.is_available():
+                        latents_w.to('mps')
                     # Combine shared and resampled private latents
                     us_combined = torch.cat((latents_w, z_e), dim=-1)
                     # Get cross-reconstruction likelihood

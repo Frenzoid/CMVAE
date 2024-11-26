@@ -43,7 +43,7 @@ from imageio import imread
 from torch.nn.functional import adaptive_avg_pool2d
 
 
-print(torch.cuda.is_available())
+print(torch.backend.mps.is_available())
 
 try:
     from tqdm import tqdm
@@ -187,6 +187,8 @@ def calculate_frechet_distance(mu1, sigma1, mu2, sigma2, eps=1e-6):
             # raise ValueError('Imaginary component {}'.format(m))
         else:
             covmean = covmean.real
+            
+    covmean = np.atleast_2d(covmean)
 
     tr_covmean = np.trace(covmean)
 
@@ -243,7 +245,7 @@ def calculate_fid_given_paths(paths, batch_size, cuda, dims, filename_state_dict
 
     model = InceptionV3([block_idx], path_state_dict=filename_state_dict)
     if cuda:
-        model.cuda()
+        model.to('mps')
 
     m1, s1 = _compute_statistics_of_path(paths[0], model, batch_size,
                                          dims, cuda)
@@ -257,7 +259,7 @@ def calculate_fid_given_paths(paths, batch_size, cuda, dims, filename_state_dict
 if __name__ == '__main__':
     args = parser.parse_args()
     os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-    print(torch.cuda.is_available())
+    print(torch.backend.mps.is_available())
     fid_value = calculate_fid_given_paths(args.path,
                                           args.batch_size,
                                           args.gpu != '',

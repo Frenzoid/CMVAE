@@ -65,16 +65,16 @@ wandb.init(
 )
 
 # CUDA stuff
-args.cuda = not cmds.no_cuda and torch.cuda.is_available()
+args.cuda = not cmds.no_cuda and torch.backend.mps.is_available()
 needs_conversion = not args.cuda
 conversion_kwargs = {'map_location': lambda st, loc: st} if needs_conversion else {}
-device = torch.device("cuda" if args.cuda else "cpu")
+device = torch.device("mps" if args.cuda else "cpu")
 
 # Get model
 modelC = getattr(models, 'CMVAE_CUBICC')
 model = modelC(args)
 if args.cuda:
-    model.cuda()
+    model.to('mps')
 
 # Load model
 model.load_state_dict(torch.load(runPath + '/model_{}.rar'.format(cmds.epoch), **conversion_kwargs), strict=False)
@@ -87,7 +87,7 @@ train_dataset = Subset(dataset, dataset.train_split)
 validation_dataset = Subset(dataset, dataset.validation_split)
 test_dataset = Subset(dataset, dataset.test_split)
 
-kwargs = {'num_workers': 2, 'pin_memory': True} if device == 'cuda' else {}
+kwargs = {'num_workers': 2, 'pin_memory': True} if device == 'mps' else {}
 
 # Create data loaders
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, **kwargs)
@@ -149,7 +149,7 @@ def prune_clusters_and_calculate_metrics_single_step(dl, idxs_to_prune=None):
                 normalized_lliks = ((lpz_c + lpc - lpc_z) * pc_z).sum(-1).squeeze(0) / model.params.latent_dim_z # Divide by the number of dimensions of shared encoding
                 lliks_single_datapoint.append(normalized_lliks)
                 # Calculate normalized entropy
-                ent_pc_z = torch.Tensor(entropy(pc_z.squeeze(0).cpu().numpy(), axis=1) / (np.log(np.count_nonzero(pc_z.squeeze(0).cpu().numpy(), axis=1))) ).cuda()
+                ent_pc_z = torch.Tensor(entropy(pc_z.squeeze(0).cpu().numpy(), axis=1) / (np.log(np.count_nonzero(pc_z.squeeze(0).cpu().numpy(), axis=1))) ).to('mps')
                 norm_entropies_single_datapoint.append(ent_pc_z)
                 cluster_assignments_modality = pc_z.argmax(-1).squeeze(0)
                 cluster_assignments_single_datapoint.append(cluster_assignments_modality)

@@ -62,8 +62,8 @@ torch.manual_seed(args.seed)
 np.random.seed(args.seed)
 
 # CUDA stuff
-args.cuda = not args.no_cuda and torch.cuda.is_available()
-device = torch.device("cuda" if args.cuda else "cpu")
+args.cuda = not args.no_cuda and torch.backend.mps.is_available()
+device = torch.device("mps" if args.cuda else "cpu")
 print(device)
 
 modelC = getattr(models, 'CMVAE_CUBICC')
@@ -123,7 +123,7 @@ train_dataset = Subset(dataset, dataset.train_split)
 validation_dataset = Subset(dataset, dataset.validation_split)
 test_dataset = Subset(dataset, dataset.test_split)
 
-kwargs = {'num_workers': 2, 'pin_memory': True} if device == 'cuda' else {}
+kwargs = {'num_workers': 2, 'pin_memory': True} if device == 'mps' else {}
 
 # Create data loaders
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, **kwargs)

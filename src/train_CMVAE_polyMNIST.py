@@ -78,7 +78,8 @@ if not args.experiment:
     args.experiment = model.modelName
 
 # Set up run path
-runId = str(args.latent_dim_w) + '_' + str(args.latent_dim_z) + '_' + str(args.beta) + '_' + str(args.seed)
+# [NEW] Included initial number of clusters and sampling size in the runId
+runId = str(args.latent_dim_w) + '_' + str(args.latent_dim_z) + '_' + str(args.latent_dim_c) + '_' + str(args.beta) + '_' + str(args.K) + '_' + str(args.seed)
 experiment_dir = Path(os.path.join(args.outputdir, args.experiment, "checkpoints"))
 experiment_dir.mkdir(parents=True, exist_ok=True)
 runPath = os.path.join(str(experiment_dir), runId)

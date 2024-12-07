@@ -7,6 +7,8 @@ import argparse
 import numpy as np
 import torch
 import torch.nn.functional as F
+# [NEW] Added json dump to save cluster idxs to prune
+import json
 # Relative import hacks
 import inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -27,7 +29,8 @@ from utils import cluster_acc
 
 # Parsing commands
 parser = argparse.ArgumentParser(description='Pruning')
-parser.add_argument('--save-dir', type=str, default="../outputs/PolyMNIST_1/checkpoints/32_32_2.5_2",
+# [NEW] Fixed default for new runId
+parser.add_argument('--save-dir', type=str, default="../outputs/PolyMNIST_1/checkpoints/32_32_40_2.5_10_2",
                     metavar='N', help='directory where model is saved')
 parser.add_argument('--no-cuda', action='store_true', default=False,
                     help='disables CUDA use')
@@ -41,6 +44,7 @@ parser.add_argument('--datadir', type=str, default="../data", help="directory wh
 # Parse commands
 cmds = parser.parse_args()
 
+# [NEW] Fixed bugs relating run paths
 if not os.path.exists(cmds.save_dir):
     runpath_temp = cmds.save_dir.removeprefix(".")
     if not os.path.exists(runpath_temp):
@@ -78,7 +82,8 @@ wandb.init(
     # Track hyperparameters and run metadata
     config=args,
     # Run name
-    name= str(args.latent_dim_w) + '_' + str(args.latent_dim_z) + '_' + str(args.beta) + '_' + str(args.seed) + "_pruning"
+    # [NEW] Adapted name to new RunId
+    name = str(args.latent_dim_w) + '_' + str(args.latent_dim_z) + '_' + str(args.latent_dim_c) + '_' + str(args.beta) + '_' + str(args.K) + '_' + str(args.seed) + "_pruning"
 )
 
 # CUDA stuff
@@ -257,6 +262,12 @@ def prune_clusters_and_calculate_metrics():
         to_log_wandb['Metrics/Test/Acc'] = acc_test
         to_log_wandb['Num_Clusters_Found_After_Pruning'] = model.params.latent_dim_c - len(clusters_to_prune_for_min_value_pne)
         wandb.log(to_log_wandb, commit=True)
+    
+
+    # [NEW] Saved JSON with clusters idxs to prune
+    with open(runPath + '/cluster_idxs_prune.json', 'w') as f:
+        json.dump({'idxs_to_prune': pruned}, f)   
+    # [NEW] Fixed returning pruned clusters
     return pruned
 
 

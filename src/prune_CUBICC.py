@@ -37,6 +37,23 @@ parser.add_argument('--datadir', type=str, default="../data", help="datadir wher
 
 # Parse commands
 cmds = parser.parse_args()
+
+if not os.path.exists(cmds.save_dir):
+    runpath_temp = cmds.save_dir.removeprefix(".")
+    if not os.path.exists(runpath_temp):
+        print("Couldn't find the path to outputs directory.")
+        raise FileNotFoundError
+    else:
+        cmds.save_dir = runpath_temp
+        
+if not os.path.exists(cmds.datadir):
+    datadir_path = cmds.datadir.removeprefix(".")
+    if not os.path.exists(datadir_path):
+        print("Couldn't find the path to data directory.")
+        raise FileNotFoundError
+    else:
+        cmds.datadir = datadir_path
+
 runPath = cmds.save_dir
 print(runPath)
 
@@ -243,7 +260,7 @@ def prune_clusters_and_calculate_metrics():
         to_log_wandb['Metrics/Test/Acc'] = acc_test
         to_log_wandb['Num_Clusters_Found_After_Pruning'] = model.params.latent_dim_c - len(clusters_to_prune_for_min_value_pne)
         wandb.log(to_log_wandb, commit=True)
-
+    return pruned
 
 
 def get_cluster_assignments_aggregating_modalities(pc_zs):
@@ -267,5 +284,6 @@ def get_cluster_assignments_aggregating_modalities(pc_zs):
 
 if __name__ == '__main__':
     with torch.no_grad():
-         prune_clusters_and_calculate_metrics()
+        results = prune_clusters_and_calculate_metrics()
+        print("Pruned clusters: ", results)
 

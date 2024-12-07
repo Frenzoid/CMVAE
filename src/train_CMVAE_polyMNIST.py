@@ -78,7 +78,7 @@ if not args.experiment:
     args.experiment = model.modelName
 
 # Set up run path
-runId = 'D' + str(args.latent_dim_w) + ':' + str(args.latent_dim_z) + ', B' + str(args.beta) + ', K' + str(args.K)
+runId = str(args.latent_dim_w) + '_' + str(args.latent_dim_z) + '_' + str(args.beta) + '_' + str(args.seed)
 experiment_dir = Path(os.path.join(args.outputdir, args.experiment, "checkpoints"))
 experiment_dir.mkdir(parents=True, exist_ok=True)
 runPath = os.path.join(str(experiment_dir), runId)

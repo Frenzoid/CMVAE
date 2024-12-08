@@ -48,20 +48,16 @@ cmds = parser.parse_args()
 
 # [NEW] Fixed bugs relating run paths
 if not os.path.exists(cmds.save_dir):
-    runpath_temp = cmds.save_dir.removeprefix(".")
-    if not os.path.exists(runpath_temp):
-        print("Couldn't find the path to outputs directory.")
-        raise FileNotFoundError
+    if not 'src' in os.getcwd():
+        for root, dirs, files in os.walk(os.getcwd()):
+            if 'src' in dirs:
+                os.chdir(os.path.join(root, 'src'))
+                break
+        else:
+            print("Couldn't find the path to outputs directory.")
+            raise FileNotFoundError
     else:
-        cmds.save_dir = runpath_temp
-        
-if not os.path.exists(cmds.datadir):
-    datadir_path = cmds.datadir.removeprefix(".")
-    if not os.path.exists(datadir_path):
-        print("Couldn't find the path to data directory.")
-        raise FileNotFoundError
-    else:
-        cmds.datadir = datadir_path
+        os.chdir(os.path.join(os.getcwd().split('src')[0], 'src'))
 
 runPath = cmds.save_dir
 print(runPath)
@@ -70,6 +66,9 @@ print(runPath)
 # Parse args from trained model
 args = torch.load(os.path.join(runPath, 'args.rar'))
 print(args)
+
+# [NEW] args need to be ArgumentParser.Namespace
+args = argparse.Namespace(**args)
 
 # Set seed
 np.random.seed(args.seed)
